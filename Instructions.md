@@ -20,9 +20,9 @@ In this task, you'll add a new endpoint to the backend application which provide
 
 1.1 Navigate to `src/Server/Api.fs` and find where the endpoints are defined in the `dojoApi` record.
 
-1.2 Observe how we bind a function to the GetDistance endpoint. Also, note the function name and the signature of the `getDistanceFromLondon` function.
+1.2 Observe how we bind a function to the GetLocation endpoint. Also, note the function name and the signature of the `getDistanceFromLondon` function.
 
-1.3 In the same manner as the GetDistance endpoint above, delete the anonymous function that's bound to the GetCrimes endpoint which currently returns an empty array and bind the `getCrimeReport` function to it instead.
+1.3 In the same manner as the GetLocation endpoint above, delete the anonymous function that's bound to the GetCrimes endpoint which currently returns an empty array and bind the `getCrimeReport` function to it instead.
 
 1.4 Navigate to the application in the web browser and run a postcode search; observe how the chart has now appeared rendering the crime statistics returned from your new API endpoint.
 
@@ -44,7 +44,7 @@ In this task, you'll take some validation code which already exists on the backe
 
 In this task, you'll add a map to the UI which shows the area surrounding the postcode on a map. By the end of this task, you'll understand how the view code in Elmish interacts with the Elmish data model and how to add "properties" onto elements.
 
-3.1 In `src/Client/Index.fs` update the `view` function to add in the map tile using the `mapWidget` function. You will find a more detailed explanation in the function (search for Task 3.1).
+3.1 In `src/Client/Index.fs` update the `view` function to add in the map tile using the `mapWidget` function. You will find a more detailed explanation in the function (search for Task 2.1).
 
 3.2 Now that you have an empty map tile, navigate to the `mapWidget` function itself and add a new item to the `map` props list, `map.center`. It takes a `LatLong` as input. You should now be able to see the map with the correct location!
 
