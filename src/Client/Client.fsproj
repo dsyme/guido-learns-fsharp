@@ -6,7 +6,7 @@
     </PropertyGroup>
     <ItemGroup>
         <None Include="index.html" />
-        <None Include="paket.references" />
+       <None Include="paket.references" />
         <Compile Include="Index.fs" />
         <Compile Include="App.fs" />
     </ItemGroup>

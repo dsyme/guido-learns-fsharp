@@ -1,3 +1,8 @@
+
+# Learning F# through SAFE Stack
+
+In this exercise you'll learn some F#.
+
 # SAFE Template
 
 This template can be used to generate a full-stack web application using the [SAFE Stack](https://safe-stack.github.io/). It was created using the dotnet [SAFE Template](https://safe-stack.github.io/docs/template-overview/). If you want to learn more about the template why not start with the [quick start](https://safe-stack.github.io/docs/quickstart/) guide?
@@ -26,6 +31,8 @@ dotnet run
 Then open `http://localhost:8080` in your browser.
 
 The build project in root directory contains a couple of different build targets. You can specify them after `--` (target name is case-insensitive).
+
+Then search for "Tasks" in the code to start completing the Dojo.
 
 To run concurrently server and client tests in watch mode (you can run this command in parallel to the previous one in new terminal):
 

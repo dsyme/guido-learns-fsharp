@@ -14,25 +14,18 @@ open Bulma
 open type Html
 open type Bulma
 
-module List =
-    let removeItem idx xs =
-        xs |> List.indexed |> List.filter (fun (i,v) -> i <> idx) |> List.map snd
-
-    let setItem idx v xs =
-        let n = List.length xs
-        if idx > n then 
-            failwith "invalid set"
-        elif idx = n then 
-            List.append xs [v]
-        else
-            xs |> List.indexed |> List.map (fun (i,v2) -> if i = idx then v else v2) 
-
-    let filteri f xs =
-        xs |> List.indexed |> List.filter (fun (i,x) -> f i x) |> List.map snd
+let country = "NL"
 
 type ServerResponse =
-    { Location: LocationResponse
-      Weather: WeatherResponse }
+    { 
+      Location: LocationResponse
+     (* Task 3.1a When we fetch data from the server, also get the weather *)
+     (*          Add a 'Weather' field here of type 'WeatherResponse' *)
+#if !SOLVED     
+#else
+      Weather: WeatherResponse 
+#endif
+    }
 
 type ServerState =
     | Idle
@@ -59,12 +52,12 @@ type Model =
     member model.GetDestination idx =
         match List.tryItem idx model.Destinations with
         | None -> Destination.Empty
-        | Some stopInfo -> stopInfo
+        | Some destination -> destination
 
-    member model.SetDestination idx stopInfo =
+    member model.SetDestination idx destination =
         let destinations =
             model.Destinations
-            |> List.setItem idx stopInfo 
+            |> List.setItem idx destination 
             |> List.filter (fun v -> v.Text <> "")
         { model with Destinations = destinations }
 
@@ -86,8 +79,8 @@ type Msg =
     | GetDestination of DestinationIndex
     | GotDestination of DestinationIndex * ServerResponse
     | ErrorMsg of DestinationIndex * exn
-    (* Task 4.1 Add a new message RemoveDestination carrying a destination number *)
-#if SOLVED
+    (* Task 4.1a Add a new message RemoveDestination carrying a destination number *)
+#if !SOLVED
 #else
     | RemoveDestination of DestinationIndex
 #endif
@@ -105,40 +98,53 @@ let dojoApi =
 
 let getResponse stopText = async {
     let! location = dojoApi.GetLocation stopText
+     (* Task 3.1c When we fetch data from the server, also get the weather *)
+     (*           Use 'let! weather = ... GetWeather' here. *)
+     (*           The call is asynchronous, so you'll need to use 'let!' to *)
+     (*           await the result of the call. *)
+#if !SOLVED
+#else
     let! weather = dojoApi.GetWeather stopText
-    return
-        { Location = location
-          Weather = weather }
-}
-
-let country = "NL"
+#endif
+    let response =
+        { 
+          Location = location
+          (* Task 3.1b Return the weather as part of the overall response *)
+          (*           Use 'Weather = weather' like 'Location = location' *)
+#if !SOLVED
+#else
+          Weather = weather 
+#endif
+        }
+    return response }
 
 /// The update function knows how to update the model given a message.
 let update msg (model: Model) =
     match msg with
     | GetDestination idx->
-        let stopInfo = model.GetDestination idx
-        match stopInfo.ValidationError with
+        let destination = model.GetDestination idx
+        match destination.ValidationError with
         | None -> 
-            let model = model.SetDestination idx  { stopInfo with ServerState = Loading }
-            model, Cmd.OfAsync.either getResponse stopInfo.Text (fun r -> GotDestination(idx, r)) (fun msg -> ErrorMsg(idx, msg))
+            let model = model.SetDestination idx  { destination with ServerState = Loading }
+            let text = destination.Text.Replace(" ","")
+            model, Cmd.OfAsync.either getResponse text (fun r -> GotDestination(idx, r)) (fun msg -> ErrorMsg(idx, msg))
         | Some _ -> 
             model, Cmd.none
 
     | GotDestination (idx, response) ->
-        let stopInfo = model.GetDestination idx
-        let stopInfo = 
-            { stopInfo  with
+        let destination = model.GetDestination idx
+        let destination = 
+            { destination  with
                 ValidationError = None
                 ServerResponse = Some response
                 ServerState = Idle }
-        let model = model.SetDestination idx stopInfo
+        let model = model.SetDestination idx destination
         model, Cmd.none
 
-    (* Task 4.2 Process the message RemoveDestination carrying a destination number *)
-    (*          You can call model.RemoveDestination to generate a new model *)
-    (*          with the element removed *)
-#if SOLVED
+    (* Task 4.1b Process the message RemoveDestination carrying a destination number *)
+    (*           You can call model.RemoveDestination to generate a new model *)
+    (*           with the element removed *)
+#if !SOLVED
 #else
     | RemoveDestination idx ->
         let model = model.RemoveDestination idx
@@ -146,28 +152,28 @@ let update msg (model: Model) =
 #endif
 
     | TextChanged (idx, p) ->
-        let stopInfo = model.GetDestination idx
-        let stopInfo = 
-            { stopInfo with
+        let destination = model.GetDestination idx
+        let destination = 
+            { destination with
                 Text = p
                 ValidationError = 
                     if p = "" || Validation.isValidPostcode country p then
                         None
                     else
                         Some "invalid postcode" }
-        let model = model.SetDestination idx stopInfo
+        let model = model.SetDestination idx destination
         model, Cmd.none
 
     | ErrorMsg (idx, e) ->
-        let stopInfo = model.GetDestination idx
-        let stopInfo = 
-            { stopInfo with
+        let destination = model.GetDestination idx
+        let destination = 
+            { destination with
                 ServerState = ServerError e.Message }
         let errorAlert =
             SimpleAlert(e.Message)
                 .Title("Try another postcode")
                 .Type(AlertType.Error)
-        let model = model.SetDestination idx stopInfo
+        let model = model.SetDestination idx destination
         model, SweetAlert.Run errorAlert
 
 let widget (title: string) (content: ReactElement list) =
@@ -222,23 +228,23 @@ let makeMarker (latitude, longitude)  =
 let mapWidget (lr:LocationResponse) =
     let latLong = (lr.Location.LatLong.Latitude, lr.Location.LatLong.Longitude)
     PigeonMaps.map [
-        (* Task 2.2 MAP: Set the center of the map using map.center *)
+        (* Task 2.2 Set the center of the map using map.center *)
         (* supply the lat/long value as input. These come from the LocationResponse *)
-#if SOLVED
+#if !SOLVED
 #else
         map.center (lr.Location.LatLong.Latitude, lr.Location.LatLong.Longitude)
 #endif
 
-        (* Task 2.3 MAP: Update the Zoom to 15. *)
-#if SOLVED
+        (* Task 2.3 Update the Zoom to 15. *)
+#if !SOLVED
         map.zoom 12
 #else
         map.zoom 15
 #endif
         map.height 500
         map.markers [
-            (* Task 2.4 MAP: Create a marker for the map. Use the makeMarker function above. *)
-#if SOLVED
+            (* Task 2.4 Create a marker for the map. Use the makeMarker function above. *)
+#if !SOLVED
 #else
             makeMarker (lr.Location.LatLong.Latitude, lr.Location.LatLong.Longitude)
 #endif
@@ -262,9 +268,9 @@ let weatherDisplay (wr: WeatherResponse) =
                 tbody [
                     tr [
                         th "Temp"
-                        (* Task 3.4 Fill in the temperature, the right number is *)
+                        (* Task 3.3 Fill in the temperature, the right number is *)
                         (*          available in the WeatherResponse *)
-#if SOLVED
+#if !SOLVED
                         td $"%.1f{3.1415}"
 #else
                         td $"%.1f{wr.AverageTemperature}"
@@ -283,22 +289,21 @@ let locationDisplay (lr: LocationResponse) =
             tbody [
                 tr [
                     th "Region"
-                    (* Task 1.2 The region has "TODO".  *)
+                    (* Task 1.2 The region shows "TODO".  *)
                     (*          Fill in the region, founf in the LocationResponse *)
                     (*          Replace the string "TODO" with lr.Location and  *)
                     (*          then hit "." to look for the Region *)
-#if SOLVED
+#if !SOLVED
                     td "TODO"
 #else
                     td lr.Location.Region
 #endif
                 ]
                 tr [
-                    (* Task 1.3 Heathrow is in the wrong country. *)
-                    (*          Change Heathrow to Schiphol *)
-                    (*          Find the definition of 'heathrow' and change to the right value for Schipol *)
-                    (*          If you like, search for DistanceToAirport and see how it's calculated *)
-#if SOLVED
+                    (* Task 1.3a Heathrow is on plague island! Don't fly there! *)
+                    (*          Change Heathrow to Schiphol! *)
+                    (*          Then search for DistanceToAirport and find where it's calculated *)
+#if !SOLVED
                     th "Distance to Heathrow"
 #else
                     th "Distance to Schiphol"
@@ -312,10 +317,10 @@ let locationDisplay (lr: LocationResponse) =
 let adjective idx =
     match idx+1 with 
     | 1 -> "First"
-#if SOLVED
+#if !SOLVED
     (* Task 1.1 The text is wrong - 2th, 3th etc. *)
     (*          Add entries for Second, Third, Fourth, Fifth, 6th etc. *)
-    | n -> string n + "st"
+    | n -> string n + "th"
 #else
     | 2 -> "Second"
     | 3 -> "Third"
@@ -340,7 +345,7 @@ let destinationEntrySection idx (destination: Destination) dispatch =
                         // Show the input box
                         input.text [
                             if destination.ValidationError.IsSome then color.isDanger else color.isInfo
-                            prop.placeholder "Ex: EC2A 4NE"
+                            prop.placeholder "Ex: 1011 or 2012 ES"
                             prop.style [ style.textTransform.uppercase ]
                             prop.value destination.Text
                             prop.onChange (fun text -> TextChanged(idx, text) |> dispatch)
@@ -390,9 +395,9 @@ let destinationEntrySection idx (destination: Destination) dispatch =
                         prop.text "Fetch"
                     ]
                 ]
-                (* Task 4.3 Add a trash icon by uncommenting the code below *)
+                (* Task 4.2 Add a trash icon by uncommenting the code below *)
 
-#if SOLVED
+#if !SOLVED
 #else
                 control.div [
                     button.a [
@@ -404,9 +409,11 @@ let destinationEntrySection idx (destination: Destination) dispatch =
                                 ]
                             ]
                         ]
-                        (* Task 4.4 Add an onClick property that dispatches the *)
+                        if destination.Text = "" then
+                            prop.disabled true
+                        (* Task 4.3 Add an onClick property that dispatches the *)
                         (* RemoveDestination message *)
-#if SOLVED
+#if !SOLVED
 #else
                         prop.onClick (fun _ -> dispatch (RemoveDestination idx)) 
 #endif
@@ -440,10 +447,10 @@ let destinationInfoSection idx (model: Destination) =
                                 locationDisplay response.Location
                             ]
                         ]
-                        (* Task 3.3 Add a second column containing the weather widget *)
+                        (* Task 3.2 Add a second column containing the weather information  *)
                         (*          Create this using weatherDisplay, which takes a WeatherResponce *)
                         (*          This can be found in the overall server response *)
-#if SOLVED
+#if !SOLVED
 #else
                         column [
                             weatherDisplay response.Weather
@@ -453,7 +460,7 @@ let destinationInfoSection idx (model: Destination) =
                     (* Task 2.1 Add the map widget *) 
                     (*          This is created using mapWidget which takes a LocationResponse *)
                     (*          This can be found in the overall server response *)
-#if SOLVED
+#if !SOLVED
 #else
                     mapWidget response.Location
 #endif

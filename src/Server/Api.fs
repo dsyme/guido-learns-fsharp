@@ -6,7 +6,8 @@ open Shared
 
 let country = "NL"
 
-#if SOLVED
+(* Task 1.3c Lookup the lat/lon for Schiphol airport on wikipedia and adjust here *)
+#if !SOLVED
 let private london = { Latitude = 51.5074; Longitude = 0.1278 }
 #else
 let private schiphol = { Latitude = 52.3105; Longitude = 4.7683 }
@@ -16,7 +17,8 @@ let getLocationResponse postcode = async {
     if not (Validation.isValidPostcode country postcode) then failwith "Invalid postcode"
 
     let! location = getLocation postcode
-#if SOLVED
+    (* Task 1.3b Right click on 'london', select Rename Symbol and rename to 'schiphol' *)
+#if !SOLVED
     let distanceToAirport = getDistanceBetweenPositions location.LatLong london
 #else
     let distanceToAirport = getDistanceBetweenPositions location.LatLong schiphol
@@ -42,7 +44,6 @@ let getWeather postcode = async {
     let! weather = Weather.getWeatherForPosition loc.LatLong
     let response = weather |> asWeatherResponse
     return response
-    //async.Return { WeatherType = WeatherType.Clear; AverageTemperature = 0. }
 }
 
 let dojoApi =
