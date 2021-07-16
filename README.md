@@ -48,25 +48,39 @@ dotnet run -- RunTests
 
 Client tests are available under `http://localhost:8081` in your browser and server tests are running in watch mode in console.
 
-## Going further: bundling and deploying to Azure
+## Going further: bundling your app
+
+There is `Bundle` to package your app:
+
+```bash
+dotnet run -- Bundle
+```
+## Going further: deploying to Azure
 
 This requires these prerequisites:
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) 
 
+First time run
 
-Finally, there are `Bundle` and `Azure` targets that you can use to package your app and deploy to Azure, respectively:
+    az login
+
+Then set the name of your app in Build.fs:
+
+```
+    let web = webApp {
+        name "feiew02"  // set the name of your app here
+    ...
+```
+
+To deploy to Azure:
 
 ```bash
-dotnet run -- Bundle
 dotnet run -- Azure 
 ```
 
+## Resources
 
-## SAFE Stack Documentation
-
-If you want to know more about the full Azure Stack and all of it's components (including Azure) visit the official [SAFE documentation](https://safe-stack.github.io/docs/).
-
-You will find more documentation about the used F# components at the following places:
-
+* [Learning F#](https://dotnet.microsoft.com/learn/fsharp/)
+* [SAFE documentation](https://safe-stack.github.io/docs/)
 * [Fable](https://fable.io/docs/)
 * [Elmish](https://elmish.github.io/elmish/)
