@@ -100,10 +100,11 @@ let dojoApi =
 
 let getResponse stopText = async {
     let! location = dojoApi.GetLocation stopText
-     (* Task 3.1c When we fetch data from the server, also get the weather *)
-     (*           Use 'let! weather = ... GetWeather' here. *)
+     (* Task 3.1c When we fetch data from the server, also get the weather  *)
+     (*                                                                     *)
+     (*           Use 'let! weather = ... GetWeather' here.                 *)
      (*           The call is asynchronous, so you'll need to use 'let!' to *)
-     (*           await the result of the call. *)
+     (*           await the result of the call.                             *)
 #if !SOLVED
 #else
     let! weather = dojoApi.GetWeather stopText
