@@ -49,11 +49,15 @@ type Destination =
 type Model =
     { Destinations: Destination list }
 
+    /// Get the given destination in the model. If it doesn't 
+    /// exist return the empty destination
     member model.GetDestination idx =
         match List.tryItem idx model.Destinations with
         | None -> Destination.Empty
         | Some destination -> destination
 
+    /// Adjust the given destination in the model. If its
+    /// text is empty remove it.
     member model.SetDestination idx destination =
         let destinations =
             model.Destinations
@@ -61,9 +65,7 @@ type Model =
             |> List.filter (fun v -> v.Text <> "")
         { model with Destinations = destinations }
 
-    member model.UpdateDestination idx f =
-        model.SetDestination idx (f model.GetDestination idx)
-
+    /// Remove the given destination from the model
     member model.RemoveDestination idx =
         let destinations =
             model.Destinations
@@ -73,7 +75,7 @@ type Model =
 /// Which stop in the trip is being referred to?
 type DestinationIndex = int
 
-/// The different types of messages in the system.
+/// The different types of messages in the web user interface.
 type Msg =
     | TextChanged of DestinationIndex * string
     | GetDestination of DestinationIndex
@@ -183,7 +185,6 @@ let widget (title: string) (content: ReactElement list) =
             yield! content
         ]
     ]
-
 
 let navbar =
     navbar [
