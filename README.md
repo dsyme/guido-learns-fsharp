@@ -47,7 +47,20 @@ Now open `http://localhost:8080` in your browser. Arrange the windows so you can
 
 ![image](https://user-images.githubusercontent.com/7204669/126204865-085a4fcb-b1f0-4d36-88dc-74a6cdd7b32d.png)
 
+## Use the app
+
+Type a Dutch postcode into the web app, e.g. "1011".
+
+![image](https://user-images.githubusercontent.com/7204669/126205728-f796c5c3-8cf8-4bcf-aabf-2665c65fa544.png)
+
+Note the app is a bit thin and has an obvious mistake:
+
+![image](https://user-images.githubusercontent.com/7204669/126205803-a911b1cc-1e5b-4b4e-85df-56d7ea4f6c98.png)
+
+Your first task will be to fix this.
+
 ## Completing the tasks
+
 
 Search files (Ctrl+Shift+F or Edit --> Find in Files) and search through for "TASK 1" to start completing the Dojo.
 
