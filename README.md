@@ -1,7 +1,7 @@
 
 # Learning F# through hands-on
 
-In this exercise you'll learn some F#.
+In this exercise you'll learn some F# through modifying and extending a web app (both client and server), and doing a little scripting.
 
 ## Install pre-requisites
 
@@ -11,9 +11,17 @@ You'll need to install the following pre-requisites in order to build SAFE appli
 * [Node LTS](https://nodejs.org/en/download/)
 
 You can use any editor, for this exercise we recommend
-* [VS Code](https://code.visualstudio.com/)
+* [VS Code](https://code.visualstudio.com/), plus
+* [The F# Extension for VS Code](https://ionide.io/) called Ionide (you will be prompted automatically)
 
 ## Starting the dojo
+
+Clone:
+
+```bash
+git clone https://github.com/dsyme/learn-fsharp
+cd learn-fsharp
+```
 
 Before you run the project **for the first time only** you must install dotnet "local tools" with this command:
 
@@ -21,22 +29,34 @@ Before you run the project **for the first time only** you must install dotnet "
 dotnet tool restore
 ```
 
-To concurrently run the server and the client components in watch mode use the following command:
+Open the editor:
+
+```bash
+code .
+```
+
+Build and run in watch mode use the following command:
 
 ```bash
 dotnet run
 ```
 
-Then open `http://localhost:8080` in your browser.
+You may have to allow `dotnet` or `Server` access to your public and/or private network. 
 
-The build project in root directory contains a couple of different build targets. You can specify them after `--` (target name is case-insensitive).
+Now open `http://localhost:8080` in your browser. Arrange the windows so you can see both Code editor and a reduced web browser.
 
-Then search for these to start completing the Dojo.
+## Completing the tasks
 
-    Task 1
-    Task 2
-    Task 3
-    Task 4
+Search files (Ctrl+Shift+F or Edit --> Find in Files) and search through for "TASK 1" to start completing the Dojo.
+
+You will see
+
+    Task 1.1
+    Task 1.2 
+
+and so on. Each task is explained in in general they are independently solvable.
+
+
 
 ## Going further: running tests
 
