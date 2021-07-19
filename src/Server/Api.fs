@@ -7,18 +7,19 @@ open Shared
 let country = "NL"
 
 (* Task 1.3c Lookup the lat/lon for Schiphol airport on wikipedia and adjust here *)
-#if !SOLVED
-let private london = { Latitude = 51.5074; Longitude = 0.1278 }
+#if SOLVED
+let london = { Latitude = 51.5074; Longitude = 0.1278 }
 #else
-let private schiphol = { Latitude = 52.3105; Longitude = 4.7683 }
+let schiphol = { Latitude = 52.3105; Longitude = 4.7683 }
 #endif
 
 let getLocationResponse postcode = async {
-    if not (Validation.isValidPostcode country postcode) then failwith "Invalid postcode"
+    if not (Validation.isValidPostcode country postcode) then 
+        failwith "Invalid postcode"
 
     let! location = getLocation postcode
     (* Task 1.3b Right click on 'london', select Rename Symbol and rename to 'schiphol' *)
-#if !SOLVED
+#if SOLVED
     let distanceToAirport = getDistanceBetweenPositions location.LatLong london
 #else
     let distanceToAirport = getDistanceBetweenPositions location.LatLong schiphol

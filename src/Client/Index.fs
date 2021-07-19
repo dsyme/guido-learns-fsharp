@@ -21,7 +21,7 @@ type ServerResponse =
       Location: LocationResponse
      (* Task 3.1a When we fetch data from the server, also get the weather *)
      (*          Add a 'Weather' field here of type 'WeatherResponse' *)
-#if !SOLVED     
+#if SOLVED     
 #else
       Weather: WeatherResponse 
 #endif
@@ -81,8 +81,8 @@ type Msg =
     | GetDestination of DestinationIndex
     | GotDestination of DestinationIndex * ServerResponse
     | ErrorMsg of DestinationIndex * exn
-    (* Task 4.1a Add a new message RemoveDestination carrying a destination number *)
-#if !SOLVED
+    (* Task 4.3a Add a new message RemoveDestination carrying a destination number *)
+#if SOLVED
 #else
     | RemoveDestination of DestinationIndex
 #endif
@@ -105,7 +105,7 @@ let getResponse stopText = async {
      (*           Use 'let! weather = ... GetWeather' here.                 *)
      (*           The call is asynchronous, so you'll need to use 'let!' to *)
      (*           await the result of the call.                             *)
-#if !SOLVED
+#if SOLVED
 #else
     let! weather = dojoApi.GetWeather stopText
 #endif
@@ -114,7 +114,7 @@ let getResponse stopText = async {
           Location = location
           (* Task 3.1b Return the weather as part of the overall response *)
           (*           Use 'Weather = weather' like 'Location = location' *)
-#if !SOLVED
+#if SOLVED
 #else
           Weather = weather 
 #endif
@@ -144,10 +144,10 @@ let update msg (model: Model) =
         let model = model.SetDestination idx destination
         model, Cmd.none
 
-    (* Task 4.1b Process the message RemoveDestination carrying a destination number *)
+    (* Task 4.3b Process the message RemoveDestination carrying a destination number *)
     (*           You can call model.RemoveDestination to generate a new model *)
     (*           with the element removed *)
-#if !SOLVED
+#if SOLVED
 #else
     | RemoveDestination idx ->
         let model = model.RemoveDestination idx
@@ -227,18 +227,18 @@ let makeMarker (latitude, longitude)  =
         ])
     ]
 
-let mapWidget (lr:LocationResponse) =
+let mapDisplay (lr: LocationResponse) =
     let latLong = (lr.Location.LatLong.Latitude, lr.Location.LatLong.Longitude)
     PigeonMaps.map [
         (* Task 2.2 Set the center of the map using map.center *)
         (* supply the lat/long value as input. These come from the LocationResponse *)
-#if !SOLVED
+#if SOLVED
 #else
         map.center (lr.Location.LatLong.Latitude, lr.Location.LatLong.Longitude)
 #endif
 
         (* Task 2.3 Update the Zoom to 15. *)
-#if !SOLVED
+#if SOLVED
         map.zoom 12
 #else
         map.zoom 15
@@ -246,7 +246,7 @@ let mapWidget (lr:LocationResponse) =
         map.height 500
         map.markers [
             (* Task 2.4 Create a marker for the map. Use the makeMarker function above. *)
-#if !SOLVED
+#if SOLVED
 #else
             makeMarker (lr.Location.LatLong.Latitude, lr.Location.LatLong.Longitude)
 #endif
@@ -272,8 +272,8 @@ let weatherDisplay (wr: WeatherResponse) =
                         th "Temp"
                         (* Task 3.3 Fill in the temperature, the right number is *)
                         (*          available in the WeatherResponse *)
-#if !SOLVED
-                        td $"%.1f{3.1415}"
+#if SOLVED
+                        td $"%.1f{3.00000}"
 #else
                         td $"%.1f{wr.AverageTemperature}"
 #endif
@@ -295,7 +295,7 @@ let locationDisplay (lr: LocationResponse) =
                     (*          Fill in the region, founf in the LocationResponse *)
                     (*          Replace the string "TODO" with lr.Location and  *)
                     (*          then hit "." to look for the Region *)
-#if !SOLVED
+#if SOLVED
                     td "TODO"
 #else
                     td lr.Location.Region
@@ -305,7 +305,7 @@ let locationDisplay (lr: LocationResponse) =
                     (* Task 1.3a Heathrow is on plague island! Don't fly there! *)
                     (*          Change Heathrow to Schiphol! *)
                     (*          Then search for DistanceToAirport and find where it's calculated *)
-#if !SOLVED
+#if SOLVED
                     th "Distance to Heathrow"
 #else
                     th "Distance to Schiphol"
@@ -319,7 +319,7 @@ let locationDisplay (lr: LocationResponse) =
 let adjective idx =
     match idx+1 with 
     | 1 -> "First"
-#if !SOLVED
+#if SOLVED
     (* Task 1.1 The text is wrong - 2th, 3th etc. *)
     (*          Add entries for Second, Third, Fourth, Fifth, 6th etc. *)
     | n -> string n + "th"
@@ -381,8 +381,17 @@ let destinationEntrySection idx (destination: Destination) dispatch =
 
                         // Show the validation error (if any)
                         help [
-                            if destination.ValidationError.IsNone then color.isPrimary else color.isDanger
-                            prop.text (destination.ValidationError |> Option.defaultValue "")
+                            match destination.ValidationError with
+                            | None -> 
+                                 color.isPrimary
+                            | Some error -> 
+                                 (* Task 2.5 *) 
+#if !SOLVED
+                                 color.isPrimary
+#else
+                                 color.isDanger
+#endif
+                                 prop.text error
                         ]
                     ]
                 ]
@@ -397,9 +406,9 @@ let destinationEntrySection idx (destination: Destination) dispatch =
                         prop.text "Fetch"
                     ]
                 ]
-                (* Task 4.2 Add a trash icon by uncommenting the code below *)
+                (* Task 4.1 Add a trash icon by uncommenting the code below *)
 
-#if !SOLVED
+#if SOLVED
 #else
                 control.div [
                     button.a [
@@ -413,11 +422,12 @@ let destinationEntrySection idx (destination: Destination) dispatch =
                         ]
                         if destination.Text = "" then
                             prop.disabled true
-                        (* Task 4.3 Add an onClick property that dispatches the *)
+                        (* Task 4.2 Add an onClick property that dispatches the *)
                         (* RemoveDestination message *)
-#if !SOLVED
+#if SOLVED
+                        prop.onClick (fun _ -> GetDestination idx |> dispatch) 
 #else
-                        prop.onClick (fun _ -> dispatch (RemoveDestination idx)) 
+                        prop.onClick (fun _ -> RemoveDestination idx |> dispatch) 
 #endif
 
                     ]
@@ -452,7 +462,7 @@ let destinationInfoSection idx (model: Destination) =
                         (* Task 3.2 Add a second column containing the weather information  *)
                         (*          Create this using weatherDisplay, which takes a WeatherResponce *)
                         (*          This can be found in the overall server response *)
-#if !SOLVED
+#if SOLVED
 #else
                         column [
                             weatherDisplay response.Weather
@@ -460,11 +470,12 @@ let destinationInfoSection idx (model: Destination) =
 #endif
                     ]
                     (* Task 2.1 Add the map widget *) 
-                    (*          This is created using mapWidget which takes a LocationResponse *)
+                    (*          This is created using mapDisplay which takes a LocationResponse *)
                     (*          This can be found in the overall server response *)
 #if !SOLVED
+                    mapDisplay response.Location
 #else
-                    mapWidget response.Location
+                    mapDisplay response.Location
 #endif
                 ]
             ]

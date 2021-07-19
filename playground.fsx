@@ -103,6 +103,27 @@
 //   2. pattern matching and completeness checks
 //   3. dispatching a new message in the Elmish architecture
 
+(* TASK 5 - play with a new web service using F# scripting *)
+
 #r "nuget: FSharp.Data, 4.1.1"
+
+open FSharp.Data
+type WikipediaIO = JsonProvider<"http://api.geonames.org/findNearbyWikipediaJSON?lat=52.3676&lng=4.9041&username=dsyme">
+
+let info = 
+    $"http://api.geonames.org/findNearbyWikipediaJSON?lat=52.3676&lng=4.9041&username=dsyme"
+    |> WikipediaIO.AsyncLoad
+    |> Async.RunSynchronously
+
+[ for x in info.Geonames -> x.Title ]
+
+let info2 = 
+    $"http://api.geonames.org/findNearbyWikipediaJSON?lat=52.1963252&lng=0.1234239&username=dsyme"
+    |> WikipediaIO.AsyncLoad |> Async.RunSynchronously
+
+[ for x in info2.Geonames -> x.Title ]
+
+// http://api.geonames.org/findNearbyWikipedia?lat=52.3676&lng=4.9041&username=dsyme
+
 
 //FSharp.Data.
