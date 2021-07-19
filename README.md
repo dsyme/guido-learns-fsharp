@@ -57,7 +57,7 @@ Note the app is a bit thin and has an obvious mistake:
 
 ![image](https://user-images.githubusercontent.com/7204669/126205803-a911b1cc-1e5b-4b4e-85df-56d7ea4f6c98.png)
 
-Your first task will be to fix this.
+This should say "2nd Stop", likewise for "3rd stop" and so on.  Your first task will be to fix this.
 
 ## Completing the tasks
 
