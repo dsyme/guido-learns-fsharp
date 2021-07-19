@@ -45,28 +45,36 @@ You may have to allow `dotnet` or `Server` access to your public and/or private 
 
 Now open `http://localhost:8080` in your browser. Arrange the windows so you can see both Code editor and a reduced web browser.
 
+![image](https://user-images.githubusercontent.com/7204669/126204865-085a4fcb-b1f0-4d36-88dc-74a6cdd7b32d.png)
+
+## Use the app
+
+Type a Dutch postcode into the web app, e.g. "1011".
+
+![image](https://user-images.githubusercontent.com/7204669/126205728-f796c5c3-8cf8-4bcf-aabf-2665c65fa544.png)
+
+Note the app is a bit thin and has an obvious mistake:
+
+![image](https://user-images.githubusercontent.com/7204669/126205803-a911b1cc-1e5b-4b4e-85df-56d7ea4f6c98.png)
+
+This should say "2nd Stop", likewise for "3rd stop" and so on.  Your first task will be to fix this.
+
 ## Completing the tasks
 
+
 Search files (Ctrl+Shift+F or Edit --> Find in Files) and search through for "TASK 1" to start completing the Dojo.
+
+![image](https://user-images.githubusercontent.com/7204669/126205547-cca1b51b-fc97-4750-96f8-711d6385fdde.png)
 
 You will see
 
     Task 1.1
     Task 1.2 
 
-and so on. Each task is explained in in general they are independently solvable.
+and so on. The first task is in `src/Client/Index.fs`.  
 
+Each task is explained in in general they are independently solvable.
 
-
-## Going further: running tests
-
-To run concurrently server and client tests in watch mode (you can run this command in parallel to the previous one in new terminal):
-
-```bash
-dotnet run -- RunTests
-```
-
-Client tests are available under `http://localhost:8081` in your browser and server tests are running in watch mode in console.
 
 ## Going further: bundling your app
 
