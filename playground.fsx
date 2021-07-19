@@ -41,7 +41,7 @@
 //   if expr then                       -- conditional expression
 //       expr
 //   else
-//       expr 
+//       expr
 //
 //   for v in expr do                   -- loop expression
 //       expr
@@ -49,12 +49,12 @@
 //   type R =                           -- record type
 //       { Field1: type1
 //         ...
-//         FieldN: typeN  }             
+//         FieldN: typeN  }
 //
 //   type U =                           -- union type
-//      | Case1 of type1 * ... * typeN  
+//      | Case1 of type1 * ... * typeN
 //      ...
-//      | CaseN of type1 * ... * typeN  
+//      | CaseN of type1 * ... * typeN
 //
 //   type C(arg1,...argN) =                     -- class type
 //      let ...
@@ -64,9 +64,9 @@
 //      member this.Method (arg1, arg2) = expr  -- define a method on a type
 
 
-(* TASK 1 *)
+(* Lessons of part 1 *)
 
-// You've learned or seen all of the following: 
+// You've learned or seen all of the following:
 //   1. let let let let (function definitions and values)
 //   2. match for pattern matching and strings
 //   3. dot notation. F# supports object programming
@@ -74,11 +74,11 @@
 //   5. F# is strongly typed.  The IDE knew your types and checks on the fly
 //   6. F# knows how symbols resolve: rename, goto-definition etc.
 
-(* TASK 2 *)
+(* Lessons of part 2 *)
 
-// You've learned or seen all of the following: 
+// You've learned or seen all of the following:
 //   1. In this programming model, display views are
-//      functional data (lists, views). 
+//      functional data (lists, views).
 //   2. The view is recalculated on each message in the IDE and
 //      an incremental diff applied to the actual DOM.
 //   3. The functional data can by computed using computed list expressions.
@@ -88,18 +88,18 @@
 //   4. You've also seen Tuples (of latitude and longitude) and used
 //      helper functions to make markers.
 
-(* TASK 3 *)
+(* Lessons of part 3 *)
 
-// You've learned or seen all of the following: 
-//   1. "let and type all day long" 
-//   2. record types - a basic workhorse of cheap and cheerful functional data 
+// You've learned or seen all of the following:
+//   1. "let and type all day long"
+//   2. record types - a basic workhorse of cheap and cheerful functional data
 //   3. async programming (async expressions) for server requests
-//   4. strongly typed string interpolatation 
+//   4. strongly typed string interpolatation
 
-(* TASK 4 *)
+(* Lessons of part 4 *)
 
-// You've learned or seen all of the following: 
-//   1. discriminated union types - here for messages in a web UI 
+// You've learned or seen all of the following:
+//   1. discriminated union types - here for messages in a web UI
 //   2. pattern matching and completeness checks
 //   3. dispatching a new message in the Elmish architecture
 
