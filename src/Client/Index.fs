@@ -19,8 +19,8 @@ let country = "NL"
 type ServerResponse =
     {
       Location: LocationResponse
-     (* Task 3.1a When we fetch data from the server, also get the weather *)
-     (*          Add a 'Weather' field here of type 'WeatherResponse' *)
+      // Task 3.1b When we fetch data from the server, also get the weather
+      //           Add a 'Weather' field here of type 'WeatherResponse'
     }
 
 type ServerState =
@@ -77,7 +77,7 @@ type Msg =
     | GetDestination of DestinationIndex
     | GotDestination of DestinationIndex * ServerResponse
     | ErrorMsg of DestinationIndex * exn
-    (* Task 4.2b Add a new message RemoveDestination carrying a destination number *)
+    // Task 4.2b Add a new message RemoveDestination carrying a destination number
 
 
 /// The init function is called to start the message pump with an initial view.
@@ -90,18 +90,19 @@ let dojoApi =
     |> Remoting.withRouteBuilder Route.builder
     |> Remoting.buildProxy<IDojoApi>
 
-let getResponse stopText = async {
-    let! location = dojoApi.GetLocation stopText
-     (* Task 3.1c When we fetch data from the server, also get the weather  *)
-     (*                                                                     *)
-     (*           Use 'let! weather = ... GetWeather' here.                 *)
-     (*           The call is asynchronous, so you'll need to use 'let!' to *)
-     (*           await the result of the call.                             *)
+let getResponse destinationText = async {
+    let! location = dojoApi.GetLocation destinationText
+     // Task 3.1d
+     //   When we fetch data from the server, also get the weather.
+     //   Use 'let! weather = ... GetWeather' here.
+     //   The call is asynchronous, so you'll need to use 'let!' to
+     //   await the result of the call.
     let response =
         {
           Location = location
-          (* Task 3.1b Return the weather as part of the overall response *)
-          (*           Use 'Weather = weather' like 'Location = location' *)
+          // Task 3.1c
+          //   Return the weather as part of the overall response
+          //   Use 'Weather = weather' like 'Location = location'
         }
     return response }
 
@@ -128,10 +129,11 @@ let update msg (model: Model) =
         let model = model.SetDestination idx destination
         model, Cmd.none
 
-    (* Task 4.2c Process the message RemoveDestination carrying a destination number *)
-    (*           Copy the code for GotDestination                                    *)
-    (*           You can call model.RemoveDestination to generate a new model        *)
-    (*           with the element removed                                            *)
+    // Task 4.2c
+    //   Process the message RemoveDestination carrying a destination number
+    //   Copy the code for GotDestination
+    //   You can call model.RemoveDestination to generate a new model
+    //   with the element removed
 
     | TextChanged (idx, p) ->
         let destination = model.GetDestination idx
@@ -207,16 +209,17 @@ let makeMarker (latitude, longitude)  =
     ]
 
 let mapDisplay (lr: LocationResponse) =
-    let latLong = (lr.Location.LatLong.Latitude, lr.Location.LatLong.Longitude)
     PigeonMaps.map [
-        (* Task 2.2 Set the center of the map. User the 'map.center' function *)
-        (* and supply the lat/long value as input. These come from the LocationResponse *)
+        // Task 2.2:
+        //    Set the center of the map.
+        //    Use the 'map.center' function and supply the lat/long value as input.
+        //    These come from the LocationResponse.
 
-        (* Task 2.3 Update the Zoom to 15. *)
+        // Task 2.3 Update the Zoom to 15.
         map.zoom 12
         map.height 500
         map.markers [
-            (* Task 2.4 Create a marker for the map. Use the makeMarker function above. *)
+            // Task 2.4 Create a marker for the map. Use the makeMarker function above.
         ]
     ]
 
@@ -237,8 +240,8 @@ let weatherDisplay (wr: WeatherResponse) =
                 tbody [
                     tr [
                         th "Temp"
-                        (* Task 3.3 Fill in the temperature, the right number is *)
-                        (*          available in the WeatherResponse *)
+                        // Task 3.3 Fill in the temperature, the right number is
+                        //          available in the WeatherResponse
                         td $"%.1f{3.00000}"
                     ]
                 ]
@@ -254,16 +257,18 @@ let locationDisplay (lr: LocationResponse) =
             tbody [
                 tr [
                     th "Region"
-                    (* Task 1.2 The region shows "TODO".  *)
-                    (*          Fill in the region, founf in the LocationResponse *)
-                    (*          Replace the string "TODO" with lr.Location and  *)
-                    (*          then hit "." to look for the Region *)
+                    // Task 1.2
+                    //   The region shows "TODO".
+                    //   Fill in the region, founf in the LocationResponse
+                    //   Replace the string "TODO" with lr.Location and
+                    //   then hit "." to look for the Region
                     td "TODO"
                 ]
                 tr [
-                    (* Task 1.3a Heathrow is on plague island! Don't fly there! *)
-                    (*          Change Heathrow to Schiphol! *)
-                    (*          Then search for DistanceToAirport and find where it's calculated *)
+                    // Task 1.3a
+                    //   Heathrow is on plague island! Don't fly there!
+                    //   Change Heathrow to Schiphol!
+                    //   Then search for DistanceToAirport and find where it's calculated
                     th "Distance to Heathrow"
                     td $"%.2f{lr.DistanceToAirport}km"
                 ]
@@ -271,8 +276,9 @@ let locationDisplay (lr: LocationResponse) =
         ]
     ]
 
-(* Task 1.1 The text is wrong - 2th, 3th etc. *)
-(*          Add entries for Second, Third, Fourth, Fifth, 6th etc. *)
+// Task 1.1
+//   The text is wrong! - 2th, 3th etc.
+//   Add entries for Second, Third, Fourth, Fifth, 6th etc.
 let adjective idx =
     match idx+1 with
     | 1 -> "First"
@@ -330,14 +336,13 @@ let destinationEntrySection idx (destination: Destination) dispatch =
                         help [
                             match destination.ValidationError with
                             | None ->
-                                 color.isPrimary
+                                 ()
                             | Some error ->
-                                 (* Task 2.5 *)
-#if !SOLVED
+                                 // Task 1.4
+                                 //   Try an incorrect postcode. The color of the
+                                 //   help text is wrong!!
+                                 //   Correct this to color.isDanger
                                  color.isPrimary
-#else
-                                 color.isDanger
-#endif
                                  prop.text error
                         ]
                     ]
@@ -347,14 +352,16 @@ let destinationEntrySection idx (destination: Destination) dispatch =
                 control.div [
                     button.a [
                         color.isInfo
-                        prop.onClick (fun _ -> dispatch (GetDestination idx))
+                        prop.onClick (fun _ -> GetDestination idx |> dispatch)
                         prop.disabled (destination.Text = "" || destination.ValidationError.IsSome)
                         if (destination.ServerState = Loading) then button.isLoading
                         prop.text "Fetch"
                     ]
                 ]
-                (* Task 4.1 Add a trash icon by uncommenting the code below *)
-                (* Select, then Edit --> Toggle Line Comment *)
+                // Task 4.1
+                //   Problem: we want a trash icon to delete stops.
+                //   Add a trash icon by uncommenting the code below
+                //   Select, then Edit --> Toggle Line Comment
 
                 // control.div [
                 //     button.a [
@@ -368,9 +375,13 @@ let destinationEntrySection idx (destination: Destination) dispatch =
                 //         ]
                 //         if destination.Text = "" then
                 //             prop.disabled true
-                //         (* Task 4.2 Adjust to use a new 'RemoveDestination' message *)
-                //         (* Initially the message kind will not be defined, you will add
-                //         (* it next. *)
+                //
+                //         // Task 4.2a
+                //         //    Problem: the trash icon does the wrong thing!
+                //         //    Task:
+                //         //       Adjust to dispatch a new 'RemoveDestination' message
+                //         //       The message kind is not  defined, add it first then
+                //         //       come back here.
                 //         prop.onClick (fun _ -> GetDestination idx |> dispatch)
 
                 //     ]
@@ -402,13 +413,18 @@ let destinationInfoSection idx (model: Destination) =
                                 locationDisplay response.Location
                             ]
                         ]
-                        (* Task 3.2 Add a second column containing the weather information  *)
-                        (*          Create this using weatherDisplay, which takes a WeatherResponce *)
-                        (*          This can be found in the overall server response *)
+                        // Task 3.2
+                        //   Problem: We need to display weather
+                        //   Approach:
+                        //     Add a second column containing the weather information.
+                        //     Create this using weatherDisplay, which takes a WeatherResponse
+                        //     This can be found in the overall server response.
                     ]
-                    (* Task 2.1 Add the map widget *)
-                    (*          This is created using mapDisplay which takes a LocationResponse *)
-                    (*          This can be found in the overall server response *)
+                    // Task 2.1
+                    //   Problem - we would like to add maps for each stop
+                    //   Approach:
+                    //     Add the map widget, created using "mapDisplay".
+                    //     This takes a LocationResponse, found in the overall server response *)
                 ]
             ]
         ]

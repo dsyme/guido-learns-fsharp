@@ -4,18 +4,23 @@ namespace global
 module List =
     // Return a new list with the item it the given index removed
     let removeItem idx xs =
-        xs |> List.indexed |> List.filter (fun (i,v) -> i <> idx) |> List.map snd
+        xs
+        |> List.indexed
+        |> List.filter (fun (i,v) -> i <> idx)
+        |> List.map snd
 
     // Return a new list with the item it the given index replaced
     let setItem idx v xs =
         let n = List.length xs
-        if idx > n then 
+        if idx > n then
             failwith "invalid set"
-        elif idx = n then 
+        elif idx = n then
             List.append xs [v]
-        elif idx = -1 then 
+        elif idx = -1 then
             List.append [v] xs
         else
-            xs |> List.indexed |> List.map (fun (i,v2) -> if i = idx then v else v2) 
+            xs
+            |> List.indexed
+            |> List.map (fun (i,v2) -> if i = idx then v else v2)
 
 

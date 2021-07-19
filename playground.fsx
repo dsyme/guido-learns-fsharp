@@ -1,129 +1,119 @@
-(* TASK 0 *)
+(* PREPARATION
 
-// Before you start, it's worth knowing about the Elmish architecture
-// See the overview slide.
+Before you start, it's worth knowing about the Elmish architecture
+See the overview slide.
 
-// Also these basic forms, see cheat sheet
+Also these basic forms, see cheat sheet
+
+  let v = expr                       -- Define a value
+
+  let f arg1 arg2 = expr             -- Define a function
+
+  f arg1 arg2                        -- Call a function
+  arg1 |> f                          -- Pipeline call a function
+  (fun arg1 arg2 -> expr)            -- Function value (lambda)
+
+  v.Name                             -- Get a property
+  v.Method(arg1, arg2)               -- Call a method
+
+  "abc"                              -- string
+  $"abc {1+1} def"                   -- interpolated string
+  $"abc %d{1+1} def"                 -- strongly typed interpolated string
+
+  (1, "two")                         -- tuplevalue
+  Some (4+4)                         -- option value
+  None                               -- option value
+
+  [ 1; 2 ]                           -- list expression
+  [ expr ]                           -- list expression (computed)
+
+  async  { expr }                    -- async expression
+  let! v = expr                      -- await in async expression
+  return expr                        -- result of async expression
+
+  match expr with                    -- pattern match
+  | pat1 -> expr1
+  ...
+  | patN -> exprN
+
+  if expr then                       -- conditional expression
+      expr
+
+  if expr then                       -- conditional expression
+      expr
+  else
+      expr
+
+  for v in expr do                   -- loop expression
+      expr
+
+  type R =                           -- record type
+      { Field1: type1
+        ...
+        FieldN: typeN  }
+
+  type U =                           -- union type
+     | Case1 of type1 * ... * typeN
+     ...
+     | CaseN of type1 * ... * typeN
+
+  type C(arg1,...argN) =                     -- class type
+     let ...
+     <members>
+
+     member this.Property = expr             -- a property on a type
+     member this.Method (arg1, arg2) = expr  -- define a method on a type
+*)
+
+
+// Task 5 - play with a new web service using F# scripting
+
+// Task 5.1 -
+//   Problem: Learn to use the F# REPL
 //
-//   let v = expr                       -- Define a value
+//   Approach
+//   - Type 1+1
+//   - Select the code (keyboard or mouse)
+//   - Use "Alt-Enter" to execute in REPL
+
+
+// Task 5.2
+//   Problem: we want to examine the REST service we would like to use
 //
-//   let f arg1 arg2 = expr             -- Define a function
+//   Approach:
+//     Look at https://www.geonames.org/export/ws-overview.html
+//     Look at http://api.geonames.org/findNearbyWikipediaJSON?lat=52.3676&lng=4.9041&username=dsyme
+
+
+
+// Task 5.3
+//   Problem: We need a package to use
 //
-//   f arg1 arg2                        -- Call a function
-//   arg |> f arg1                      -- Pipeline call a function
-//   (fun arg1 arg2 -> expr)            -- Function value (lambda)
+//   Look at https://nuget.org, search for FSharp.Data
+//   Copy the text to reference for scripting.
+
+
+// Task 5.4 - Point the JsonProvider to the web service
 //
-//   v.Name                             -- Get a property
-//   v.Method(arg1, arg2)               -- Call a method
+
+// open FSharp.Data
+// type WikipediaIO = JsonProvider<"http://api.geonames.org/findNearbyWikipediaJSON?lat=52.3676&lng=4.9041&username=dsyme">
+
+
+// Task 5.5 - Use the JsonProvider to download the data, the code is below
 //
-//   "abc"                              -- string
-//   $"abc {1+1} def"                   -- interpolated string
-//   $"abc %d{1+1} def"                 -- stringly typed interpolated string
+// let info =
+//     $"http://api.geonames.org/findNearbyWikipediaJSON?lat=52.3676&lng=4.9041&username=dsyme"
+//     |> WikipediaIO.AsyncLoad
+//     |> Async.RunSynchronously
+
+
+
+// Task 5.6 - Extract the title, latitude, longitude and summary for each result
 //
-//   Some (4+4)                         -- option value
-//   None                               -- option value
-//
-//   [ 1; 2 ]                           -- list expression
-//   [ expr ]                           -- list expression (computed)
-//
-//   async  { expr }                    -- async expression
-//   let! v = expr                      -- await in async expression
-//   return expr                        -- result of async expression
-//
-//   match expr with                    -- pattern match
-//   | pat1 -> expr1
-//   ...
-//   | patN -> exprN
-//
-//   if expr then                       -- conditional expression
-//       expr
-//
-//   if expr then                       -- conditional expression
-//       expr
-//   else
-//       expr
-//
-//   for v in expr do                   -- loop expression
-//       expr
-//
-//   type R =                           -- record type
-//       { Field1: type1
-//         ...
-//         FieldN: typeN  }
-//
-//   type U =                           -- union type
-//      | Case1 of type1 * ... * typeN
-//      ...
-//      | CaseN of type1 * ... * typeN
-//
-//   type C(arg1,...argN) =                     -- class type
-//      let ...
-//      <members>
-//
-//      member this.Property = expr             -- a property on a type
-//      member this.Method (arg1, arg2) = expr  -- define a method on a type
+// A starting snippet is below
+
+// [ for x in info.Geonames -> x.Title ]
 
 
-(* Lessons of part 1 *)
 
-// You've learned or seen all of the following:
-//   1. let let let let (function definitions and values)
-//   2. match for pattern matching and strings
-//   3. dot notation. F# supports object programming
-//   4. strings, including interpolated strings
-//   5. F# is strongly typed.  The IDE knew your types and checks on the fly
-//   6. F# knows how symbols resolve: rename, goto-definition etc.
-
-(* Lessons of part 2 *)
-
-// You've learned or seen all of the following:
-//   1. In this programming model, display views are
-//      functional data (lists, views).
-//   2. The view is recalculated on each message in the IDE and
-//      an incremental diff applied to the actual DOM.
-//   3. The functional data can by computed using computed list expressions.
-//      This is a super-powerful form of list comprehensions
-//      and is based on a very general feature called F# computation expressions.
-//      Computed list expressions are incredibly performant and versatile
-//   4. You've also seen Tuples (of latitude and longitude) and used
-//      helper functions to make markers.
-
-(* Lessons of part 3 *)
-
-// You've learned or seen all of the following:
-//   1. "let and type all day long"
-//   2. record types - a basic workhorse of cheap and cheerful functional data
-//   3. async programming (async expressions) for server requests
-//   4. strongly typed string interpolatation
-
-(* Lessons of part 4 *)
-
-// You've learned or seen all of the following:
-//   1. discriminated union types - here for messages in a web UI
-//   2. pattern matching and completeness checks
-//   3. dispatching a new message in the Elmish architecture
-
-(* TASK 5 - play with a new web service using F# scripting *)
-
-#r "nuget: FSharp.Data, 4.1.1"
-
-open FSharp.Data
-type WikipediaIO = JsonProvider<"http://api.geonames.org/findNearbyWikipediaJSON?lat=52.3676&lng=4.9041&username=dsyme">
-
-let info = 
-    $"http://api.geonames.org/findNearbyWikipediaJSON?lat=52.3676&lng=4.9041&username=dsyme"
-    |> WikipediaIO.AsyncLoad
-    |> Async.RunSynchronously
-
-[ for x in info.Geonames -> x.Title ]
-
-let info2 = 
-    $"http://api.geonames.org/findNearbyWikipediaJSON?lat=52.1963252&lng=0.1234239&username=dsyme"
-    |> WikipediaIO.AsyncLoad |> Async.RunSynchronously
-
-[ for x in info2.Geonames -> x.Title ]
-
-// http://api.geonames.org/findNearbyWikipedia?lat=52.3676&lng=4.9041&username=dsyme
-
-
-//FSharp.Data.
