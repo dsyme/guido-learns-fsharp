@@ -47,7 +47,14 @@ Now open `http://localhost:8080` in your browser. Arrange the windows so you can
 
 ## Completing the tasks
 
-Search through for "TASK 1" to start completing the Dojo. Each task is explained.
+Search files (Ctrl+Shift+F or Edit --> Find in Files) and search through for "TASK 1" to start completing the Dojo.
+
+You will see
+
+    Task 1.1
+    Task 1.2 
+
+and so on. Each task is explained in in general they are independently solvable.
 
 
 
