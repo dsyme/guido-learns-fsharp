@@ -12,7 +12,7 @@ You'll need to install the following pre-requisites in order to build SAFE appli
 
 You can use any editor, for this exercise we recommend
 * [VS Code](https://code.visualstudio.com/), plus
-* [The F# Extension for VS Code](https://ionide.io/) called Ionide (you will be prompted automatically)
+* [The F# Extension for VS Code](https://ionide.io/) called Ionide (you will be prompted automatically in VS Code later to install this)
 
 ## Starting the dojo
 
