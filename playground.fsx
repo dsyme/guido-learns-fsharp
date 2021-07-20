@@ -6,11 +6,12 @@ See the overview slide.
 Also these basic forms, see cheat sheet
 
   let v = expr                       -- Define a value
+  let mutable v = expr               -- Define a mutable value
 
   let f arg1 arg2 = expr             -- Define a function
 
   f arg1 arg2                        -- Call a function
-  arg1 |> f                          -- Pipeline call a function
+  arg |> f                           -- Pipeline call a function
   (fun arg1 arg2 -> expr)            -- Function value (lambda)
 
   v.Name                             -- Get a property
@@ -20,7 +21,7 @@ Also these basic forms, see cheat sheet
   $"abc {1+1} def"                   -- interpolated string
   $"abc %d{1+1} def"                 -- strongly typed interpolated string
 
-  (1, "two")                         -- tuplevalue
+  (1, "two")                         -- tuple value
   Some (4+4)                         -- option value
   None                               -- option value
 

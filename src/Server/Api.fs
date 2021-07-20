@@ -24,11 +24,11 @@ let getLocationResponse postcode = async {
     //   Approach: Right click on 'london', select Rename Symbol and rename to 'schiphol'
     let distanceToAirport = getDistanceBetweenPositions location.LatLong london
 
-    let lr =
+    let response =
         { Postcode = postcode
           Location = location
           DistanceToAirport = (distanceToAirport / 1000.<meter>) }
-    return lr
+    return response
 }
 
 let private asWeatherResponse (weather: Weather.MetaWeatherLocation.Root) =
@@ -38,6 +38,7 @@ let private asWeatherResponse (weather: Weather.MetaWeatherLocation.Root) =
         |> Array.maxBy snd
         |> fst
         |> WeatherType.Parse
+
       AverageTemperature =
         weather.ConsolidatedWeather
         |> Array.sumBy (fun r -> float r.TheTemp) }
