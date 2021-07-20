@@ -3,67 +3,6 @@
 Before you start, it's worth knowing about the Elmish architecture
 See the overview slide.
 
-Also these basic forms, see cheat sheet
-
-  let v = expr                       -- Define a value
-  let mutable v = expr               -- Define a mutable value
-
-  let f arg1 arg2 = expr             -- Define a function
-
-  f arg1 arg2                        -- Call a function
-  arg |> f                           -- Pipeline call a function
-  (fun arg1 arg2 -> expr)            -- Function value (lambda)
-
-  v.Name                             -- Get a property
-  v.Method(arg1, arg2)               -- Call a method
-
-  "abc"                              -- string
-  $"abc {1+1} def"                   -- interpolated string
-  $"abc %d{1+1} def"                 -- strongly typed interpolated string
-
-  (1, "two")                         -- tuple value
-  Some (4+4)                         -- option value
-  None                               -- option value
-
-  [ 1; 2 ]                           -- list expression
-  [ expr ]                           -- list expression (computed)
-
-  async  { expr }                    -- async expression
-  let! v = expr                      -- await in async expression
-  return expr                        -- result of async expression
-
-  match expr with                    -- pattern match
-  | pat1 -> expr1
-  ...
-  | patN -> exprN
-
-  if expr then                       -- conditional expression
-      expr
-
-  if expr then                       -- conditional expression
-      expr
-  else
-      expr
-
-  for v in expr do                   -- loop expression
-      expr
-
-  type R =                           -- record type
-      { Field1: type1
-        ...
-        FieldN: typeN  }
-
-  type U =                           -- union type
-     | Case1 of type1 * ... * typeN
-     ...
-     | CaseN of type1 * ... * typeN
-
-  type C(arg1,...argN) =                     -- class type
-     let ...
-     <members>
-
-     member this.Property = expr             -- a property on a type
-     member this.Method (arg1, arg2) = expr  -- define a method on a type
 *)
 
 
