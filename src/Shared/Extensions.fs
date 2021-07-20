@@ -3,14 +3,14 @@ namespace global
 
 module List =
     // Return a new list with the item it the given index removed
-    let removeItem idx xs =
+    let removeAt idx xs =
         xs
         |> List.indexed
         |> List.filter (fun (i,v) -> i <> idx)
         |> List.map snd
 
     // Return a new list with the item it the given index replaced
-    let setItem idx v xs =
+    let setAt idx v xs =
         let n = List.length xs
         if idx > n then
             failwith "invalid set"

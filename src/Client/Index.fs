@@ -57,7 +57,7 @@ type Model =
     member model.SetDestination idx destination =
         let destinations =
             model.Destinations
-            |> List.setItem idx destination
+            |> List.setAt idx destination
             |> List.filter (fun v -> v.Text <> "")
         { model with Destinations = destinations }
 
@@ -65,7 +65,7 @@ type Model =
     member model.RemoveDestination idx =
         let destinations =
             model.Destinations
-            |> List.removeItem idx
+            |> List.removeAt idx
         { model with Destinations = destinations }
 
 /// Which stop in the trip is being referred to?
