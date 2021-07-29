@@ -19,8 +19,8 @@ You can use any editor, for this exercise we recommend
 Clone:
 
 ```bash
-git clone https://github.com/dsyme/learn-fsharp
-cd learn-fsharp
+git clone https://github.com/dsyme/guido-learns-fsharp
+cd guido-learns-fsharp
 ```
 
 Before you run the project **for the first time only** you must install dotnet "local tools" with this command:
