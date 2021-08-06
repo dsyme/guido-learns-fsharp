@@ -36,6 +36,7 @@ See the overview slide.
 // Task 5.4 - Point the JsonProvider to the web service
 //
 
+// #r "nuget:FSharp.Data"
 // open FSharp.Data
 // type WikipediaIO = JsonProvider<"http://api.geonames.org/findNearbyWikipediaJSON?lat=52.3676&lng=4.9041&username=dsyme">
 
@@ -54,6 +55,3 @@ See the overview slide.
 // A starting snippet is below
 
 // [ for x in info.Geonames -> x.Title ]
-
-
-
