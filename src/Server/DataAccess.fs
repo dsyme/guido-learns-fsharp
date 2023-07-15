@@ -49,7 +49,7 @@ module Weather =
         return!
             bestLocationId
             |> sprintf "https://www.metaweather.com/api/location/%d"
-            |> MetaWeatherLocation.AsyncLoad }*)
+            |> MetaWeatherLocation.AsyncLoad }
 
 #else
 
