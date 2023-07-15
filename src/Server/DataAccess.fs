@@ -38,7 +38,7 @@ module GeoLocation =
 
 [<AutoOpen>]
 module Weather =
-    type MetaWeatherSearch = JsonProvider<"https://api.weather.gov/points/51.5074,0.1278">
+    type MetaWeatherSearch = JsonProvider<"https://www.metaweather.com/api/location/search/?lattlong=51.5074,0.1278">
     type MetaWeatherLocation = JsonProvider<"https://www.metaweather.com/api/location/1393672">
     let getWeatherForPosition location = async {
         let! locations =
