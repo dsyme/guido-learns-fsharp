@@ -7,7 +7,7 @@ In this exercise you'll learn some F# through modifying and extending a web app 
 
 You'll need to install the following pre-requisites in order to build SAFE applications
 
-* [.NET Core SDK](https://www.microsoft.com/net/download) 5.0 or higher
+* [.NET SDK](https://www.microsoft.com/net/download) check the version defined in [global.json]
 * [Node LTS](https://nodejs.org/en/download/)
 
 You can use any editor, for this exercise we recommend

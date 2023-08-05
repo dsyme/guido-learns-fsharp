@@ -1,5 +1,4 @@
 STORAGE: NONE
-RESTRICTION: == net5.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
     Elmish.SweetAlert (3.4)

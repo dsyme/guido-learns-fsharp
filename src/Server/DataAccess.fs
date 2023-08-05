@@ -10,7 +10,7 @@ module GeoLocation =
     type PostcodesIO = JsonProvider<"http://api.geonames.org/postalCodeLookupJSON?postalcode=1011&country=NL&username=dsyme">
 
     let getLocation postcode = async {
-        let! info = 
+        let! info =
             $"http://api.geonames.org/postalCodeLookupJSON?postalcode={postcode}&country=NL&username=dsyme"
             |> PostcodesIO.AsyncLoad
         if info.Postalcodes.Length > 0 then
@@ -34,6 +34,7 @@ module GeoLocation =
         let a = sin (deltaPhi / 2.0) * sin (deltaPhi / 2.0) + cos phi1 * cos phi2 * sin (deltaLambda / 2.0) * sin (deltaLambda / 2.0)
         let c = 2.0 * atan2 (sqrt a) (sqrt (1.0 - a))
         r * c * 1.<meter>
+#if METAWEATHER_ALIVE
 
 [<AutoOpen>]
 module Weather =
@@ -49,3 +50,17 @@ module Weather =
             bestLocationId
             |> sprintf "https://www.metaweather.com/api/location/%d"
             |> MetaWeatherLocation.AsyncLoad }
+
+#else
+
+module Weather =
+
+    type OpenMeteoSearch = JsonProvider<"https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m">
+
+    let getWeatherForPosition location = async {
+        let uri = $"https://api.open-meteo.com/v1/forecast?latitude={location.Latitude}&longitude={location.Longitude}&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m"
+        let! result = OpenMeteoSearch.AsyncLoad uri
+
+        return result
+    }
+#endif
